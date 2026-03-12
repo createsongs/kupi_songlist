@@ -3,10 +3,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CreateSongs</title>
 <meta name="theme-color" content="#000000">
 <link rel="apple-touch-icon" href="cover1.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{box-sizing:border-box}
 body{
@@ -41,6 +41,7 @@ header p{
  display:grid;
  grid-template-columns:repeat(2,1fr);
  gap:20px;
+ align-items:start;
 }
 
 /* song card */
@@ -151,10 +152,21 @@ header p{
  box-shadow:0 0 10px #00eaff;
 }
 
-.lyrics{
- display:flex;
- align-items:center;
- justify-content:center;
+.song.lyrics{
+ grid-column:2;
+ grid-row:auto;
+}
+
+@media (max-width:600px){
+
+.container{
+ grid-template-columns:1fr;
+}
+
+.song.lyrics{
+ grid-column:span 1;
+}
+
 }
 
 .lyrics-box{
