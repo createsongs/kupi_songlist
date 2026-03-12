@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreateSongs</title>
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="cover1.png">
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+ color:white;
+ background:#000;
+ min-height:100svh;
+}
+
+/* header */
+header{
+ text-align:center;
+ padding:50px 20px 10px;
+}
+header h1{
+ letter-spacing:4px;
+ font-weight:300;
+ margin:0;
+ font-size:30px;
+}
+header p{
+ opacity:.7;
+ margin-top:6px;
+}
+
+/* grid layout */
+.container{
+ max-width:900px;
+ margin:auto;
+ padding:20px;
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:20px;
+}
+
+/* song card */
+.song{
+ background:rgba(255,255,255,.05);
+ border-radius:12px;
+ padding:12px;
+ border:1px solid rgba(255,255,255,.12);
+ transition:.25s;
+}
+
+.song.playing{
+ box-shadow:0 0 20px rgba(0,220,255,.9);
+ border-color:#00eaff;
+}
+
+/* cover */
+.cover{
+ width:100%;
+ border-radius:8px;
+ margin-bottom:6px;
+}
+.title{
+ margin-top:6px;
+ font-size:13px;
+ opacity:.9;
+ text-align:center;
+}
+/* button */
+.play{
+ margin-top:8px;
+ width:100%;
+ padding:6px;
+ background:#111;
+ border:1px solid #333;
+ color:white;
+ border-radius:6px;
+}
+
+/* progress */
+.progress{
+ height:6px;
+ background:#333;
+ border-radius:10px;
+ margin-top:8px;
+ cursor:pointer;
+}
+
+.bar{
+ height:100%;
+ width:0%;
+ border-radius:10px;
+ background:linear-gradient(90deg,#00eaff,#4b7cff);
+}
+
+.time{
+ font-size:11px;
+ opacity:.7;
+ margin-top:3px;
+}
+
+/* password */
+
+#lock{
+ position:fixed;
+ inset:0;
+ background:linear-gradient(180deg,#0a0a0a,#000);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ z-index:999;
+}
+
+#lock h2{
+ font-weight:400;
+ letter-spacing:2px;
+ margin-bottom:8px;
+}
+
+#lock p{
+ opacity:.6;
+ font-size:12px;
+ margin-bottom:15px;
+}
+
+#lock input{
+ padding:12px;
+ border-radius:20px;
+ border:1px solid #333;
+ background:#111;
+ color:white;
+ text-align:center;
+ width:180px;
+}
+
+#lock button{
+ margin-top:12px;
+ padding:8px 18px;
+ border-radius:20px;
+ border:1px solid #00eaff;
+ background:#111;
+ color:#00eaff;
+ cursor:pointer;
+}
+
+#lock button:hover{
+ box-shadow:0 0 10px #00eaff;
+}
+
+.lyrics{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+
+.lyrics-box{
+ font-size:14px;
+ line-height:1.9;
+ text-align:left;
+ max-height:420px;
+ overflow-y:auto;
+ padding:16px 18px;
+}
+
+.vote{
+ margin-top:15px;
+ font-size:12px;
+ opacity:.7;
+ text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="lock">
+
+<h2>🎧 CreateSongs</h2>
+
+<p>Private Music Room</p>
+
+<input type="password" id="pass">
+
+<button onclick="checkPass()">enter</button>
+
+</div>
+
+<header>
+<h1>Create Songs by kuma</h1>
+<p>Private Music Room</p>
+</header>
+
+<div class="container">
+
+<div class="song">
+<img class="cover" src="cover1.png">
+<div class="title"></div>
+<div class="progress"><div class="bar"></div></div>
+<div class="time">0:00 / 0:00</div>
+<audio src="song1.mp3"></audio>
+</div>
+
+<div class="song">
+<img class="cover" src="cover1.png">
+<div class="title"></div>
+<div class="progress"><div class="bar"></div></div>
+<div class="time">0:00 / 0:00</div>
+<audio src="song2.mp3"></audio>
+</div>
+
+<div class="song">
+<img class="cover" src="cover1.png">
+<div class="title"></div>
+<div class="progress"><div class="bar"></div></div>
+<div class="time">0:00 / 0:00</div>
+<audio src="song3.mp3"></audio>
+</div>
+
+<div class="song">
+<img class="cover" src="cover1.png">
+<div class="title"></div>
+<div class="progress"><div class="bar"></div></div>
+<div class="time">0:00 / 0:00</div>
+<audio src="song4.mp3"></audio>
+</div>
+
+<div class="song">
+<img class="cover" src="cover1.png">
+<div class="title"></div>
+<div class="progress"><div class="bar"></div></div>
+<div class="time">0:00 / 0:00</div>
+<audio src="song5.mp3"></audio>
+</div>
+
+<div class="song lyrics">
+
+<div class="lyrics-box">
+
+<h3>Lyrics</h3>
+
+<p>
+
+こんばんは<br>
+くぴです<br><br>
+
+いくよ！<br><br>
+
+静かな部屋 リングライト<br>
+スマホの画面 スイッチオン<br>
+通知が鳴る コメント流れる<br>
+今日も始まる くぴのステージ<br><br>
+
+「こんばんは」って 声を出せば<br>
+画面の向こう 誰かが笑う<br>
+トントン弾む 白いボール<br>
+大好きな音 背中押す<br><br>
+
+泣きたい夜も 負けそうな日も<br>
+声を出せば 少し強くなれた<br>
+いま 響かせる<br><br>
+
+歌え！<br>
+この小さな部屋から<br>
+声が届くまで 何度でも<br>
+泣いた夜さえ 笑い飛ばして<br>
+未来まで 響かせろ<br><br>
+
+声が届くまで 声が届くまで<br><br>
+
+長い夜を 越えてきた<br>
+止まったみたいな 時間の中<br>
+それでもまた 前を向いて<br>
+ここに立ってる<br><br>
+
+白いボールが 弾むように<br>
+何度だって 立ち上がる<br>
+小さな夢を 今日も<br>
+追いかけてる<br><br>
+
+遠くてもいい 小さくてもいい<br>
+この声が 誰かに届くなら<br><br>
+
+歌え！<br>
+この小さな部屋から<br>
+声が届くまで 何度でも<br>
+泣いた夜さえ 笑い飛ばして<br>
+未来まで 響かせろ<br><br>
+
+走れ！<br>
+どんな昨日でも<br>
+今日という日を 駆け抜けて<br><br>
+
+歌え！<br>
+まだ終わらない この物語<br>
+声が届くまで<br><br>
+
+今日もありがとう<br>
+また<br>
+こんばんは
+
+</p>
+
+<div class="vote">
+Which version do you like? 🎧
+</div>
+
+</div>
+</div>
+
+<script>
+
+const tracks = [
+ {title:"声が届くまで – Create 1", file:"song1.mp3"},
+ {title:"声が届くまで – Create 2", file:"song2.mp3"},
+ {title:"声が届くまで – Create 3", file:"song3.mp3"},
+ {title:"声が届くまで – Create 4", file:"song4.mp3"},
+ {title:"声が届くまで – Create 5", file:"song5.mp3"}
+];
+
+const titles = document.querySelectorAll(".title");
+
+tracks.forEach((track,i)=>{
+  if(titles[i]){
+    titles[i].textContent = track.title;
+  }
+});
+
+</script>
+<script>
+
+const PASSWORD="kupi320";
+
+function checkPass(){
+ if(document.getElementById("pass").value===PASSWORD){
+  document.getElementById("lock").style.display="none";
+ }else{
+  alert("wrong password");
+ }
+}
+
+const songs=document.querySelectorAll(".song");
+const players=document.querySelectorAll("audio");
+
+function format(t){
+ const m=Math.floor(t/60);
+ const s=Math.floor(t%60).toString().padStart(2,'0');
+ return m+":"+s;
+}
+
+songs.forEach((song,i)=>{
+
+if(song.classList.contains("lyrics")) return;
+
+ const audio=song.querySelector("audio");
+ const bar=song.querySelector(".bar");
+ const progress=song.querySelector(".progress");
+ const time=song.querySelector(".time");
+
+song.onclick=()=>{
+
+  if(audio.paused){
+
+   players.forEach(p=>{
+    p.pause();
+    p.closest(".song").classList.remove("playing");
+   });
+
+   audio.play();
+   song.classList.add("playing");
+
+   if("mediaSession" in navigator){
+     navigator.mediaSession.metadata = new MediaMetadata({
+       title: tracks[i].title,
+       artist: "CreateSongs",
+       album: "Private Music Room"
+     });
+   }
+
+  }else{
+
+   audio.pause();
+   song.classList.remove("playing");
+
+  }
+
+};
+
+ audio.addEventListener("timeupdate",()=>{
+
+  const percent=(audio.currentTime/audio.duration)*100;
+  bar.style.width=percent+"%";
+
+  time.textContent=format(audio.currentTime)+" / "+format(audio.duration||0);
+
+ });
+
+ progress.onclick=(e)=>{
+
+  const rect=progress.getBoundingClientRect();
+  const pos=(e.clientX-rect.left)/rect.width;
+  audio.currentTime=pos*audio.duration;
+
+ };
+
+ audio.onended=()=>{
+  song.classList.remove("playing");
+ };
+
+});
+
+if("mediaSession" in navigator){
+
+ navigator.mediaSession.setActionHandler('play', ()=>players[0].play());
+
+ navigator.mediaSession.setActionHandler('pause', ()=>{
+   players.forEach(p=>p.pause());
+ });
+
+}
+</script>
+
+</body>
+</html>
