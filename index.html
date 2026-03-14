@@ -515,6 +515,9 @@ if(albumHeader){
 }
 
 const player = document.getElementById("player");
+player.setAttribute("x-webkit-airplay","allow");
+player.setAttribute("playsinline","");
+player.setAttribute("webkit-playsinline","");
 const trackList = document.querySelectorAll(".track");
 
 trackList.forEach(track => {
