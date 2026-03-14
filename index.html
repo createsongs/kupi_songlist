@@ -586,26 +586,12 @@ player.onended = () => {
   next.querySelector(".track-num").innerHTML =
   '<div class="equalizer"><span></span><span></span><span></span></div>';
 
-player.src = next.dataset.audio;
+  player.src = next.dataset.audio;
+  player.play();
 
-if ("mediaSession" in navigator) {
+ }
 
- navigator.mediaSession.metadata = new MediaMetadata({
-  title: next.querySelector(".track-title").textContent,
-  artist: "Kupi",
-  album: "CreateSongs",
-  artwork: [
-   {
-    src: "cover.jpg",
-    sizes: "512x512",
-    type: "image/png"
-   }
-  ]
- });
-
-}
-
-player.play();
+};
 
 player.onplay = () => {
 
