@@ -64,6 +64,26 @@ header p{
  border-radius:8px;
  margin-bottom:6px;
 }
+
+/* 再生中ジャケット発光 */
+.cover.playing{
+animation:coverGlow 3s ease-in-out infinite;
+}
+
+@keyframes coverGlow{
+0%{
+box-shadow:0 0 0 rgba(0,120,255,0);
+}
+50%{
+box-shadow:
+0 0 20px rgba(90,140,255,0.8),
+0 0 45px rgba(90,140,255,0.6);
+}
+100%{
+box-shadow:0 0 0 rgba(0,120,255,0);
+}
+}
+
 .title{
  margin-top:6px;
  font-size:13px;
@@ -176,6 +196,106 @@ header p{
  text-align:center;
 }
 
+.album-tracks{
+display:none;
+}
+
+.track{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+border-bottom:1px solid #333;
+cursor:pointer;
+}
+
+.track-title{
+min-width:110px;
+}
+
+.track:hover{
+background:#111;
+}
+
+.track-time{
+opacity:0.7;
+font-size:12px;
+}
+
+.track-progress{
+flex:1;
+height:6px;
+background:#222;
+border-radius:6px;
+overflow:visible;
+}
+
+.track.playing{
+color:#00ffe5;
+text-shadow:
+0 0 6px #00ffe5,
+0 0 12px #00ffe5,
+0 0 20px #00ffe5;
+}
+
+.track-bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00ffe5,#4b7cff);
+border-radius:6px;
+}
+
+.track.playing .track-bar{
+box-shadow:
+0 0 10px #00ffe5,
+0 0 20px #00ffe5,
+0 0 40px #00ffe5;
+filter:brightness(1.4);
+}
+
+.track-num{
+width:18px;
+text-align:center;
+opacity:0.6;
+}
+
+.track.playing .track-num{
+color:#00ffe5;
+text-shadow:
+0 0 6px #00ffe5,
+0 0 12px #00ffe5,
+0 0 20px #00ffe5;
+}
+
+.equalizer{
+display:inline-flex;
+gap:2px;
+margin-right:4px;
+}
+
+.equalizer span{
+width:3px;
+height:10px;
+background:#00ffe5;
+display:block;
+animation:eq 1s infinite ease-in-out;
+}
+
+.equalizer span:nth-child(2){
+animation-delay:0.2s;
+}
+
+.equalizer span:nth-child(3){
+animation-delay:0.4s;
+}
+
+@keyframes eq{
+0%,100%{height:4px}
+50%{height:12px}
+}
+
+
+
 </style>
 </head>
 
@@ -200,44 +320,70 @@ header p{
 
 <div class="container">
 
-<div class="song">
+<div class="album">
+
+<div class="album-header">
 <img class="cover" src="cover1.png">
-<div class="title"></div>
-<div class="progress"><div class="bar"></div></div>
-<div class="time">0:00 / 0:00</div>
-<audio src="song1.mp3"></audio>
 </div>
 
-<div class="song">
-<img class="cover" src="cover1.png">
-<div class="title"></div>
-<div class="progress"><div class="bar"></div></div>
-<div class="time">0:00 / 0:00</div>
-<audio src="song2.mp3"></audio>
+<div class="album-tracks">
+
+<div class="track" data-audio="song1.mp3">
+ <span class="track-num">1</span> 
+ <span class="track-title">Create 1</span>
+
+  <div class="track-progress">
+    <div class="track-bar"></div>
+  </div>
+
+  <span class="track-time">4:18</span>
 </div>
 
-<div class="song">
-<img class="cover" src="cover1.png">
-<div class="title"></div>
-<div class="progress"><div class="bar"></div></div>
-<div class="time">0:00 / 0:00</div>
-<audio src="song3.mp3"></audio>
+<div class="track" data-audio="song2.mp3">
+  <span class="track-num">2</span>
+  <span class="track-title">Create 2</span>
+
+  <div class="track-progress">
+    <div class="track-bar"></div>
+  </div>
+
+  <span class="track-time">4:04</span>
+</div>
+<div class="track" data-audio="song3.mp3">
+  <span class="track-num">3</span>
+  <span class="track-title">Create 3</span>
+
+  <div class="track-progress">
+    <div class="track-bar"></div>
+  </div>
+
+  <span class="track-time">3:54</span>
 </div>
 
-<div class="song">
-<img class="cover" src="cover1.png">
-<div class="title"></div>
-<div class="progress"><div class="bar"></div></div>
-<div class="time">0:00 / 0:00</div>
-<audio src="song4.mp3"></audio>
+<div class="track" data-audio="song4.mp3">
+  <span class="track-num">4</span>
+  <span class="track-title">Create 4</span>
+
+  <div class="track-progress">
+    <div class="track-bar"></div>
+  </div>
+
+  <span class="track-time">3:49</span>
 </div>
 
-<div class="song">
-<img class="cover" src="cover1.png">
-<div class="title"></div>
-<div class="progress"><div class="bar"></div></div>
-<div class="time">0:00 / 0:00</div>
-<audio src="song5.mp3"></audio>
+<div class="track" data-audio="song5.mp3">
+  <span class="track-num">5</span>
+  <span class="track-title">Create 5</span>
+
+  <div class="track-progress">
+    <div class="track-bar"></div>
+  </div>
+
+  <span class="track-time">4:03</span>
+</div>
+
+<audio id="player"></audio>
+</div>
 </div>
 
 <div class="song lyrics">
@@ -314,117 +460,247 @@ Which version do you like? 🎧
 
 </div>
 </div>
-
-<script>
-
-const tracks = [
- {title:"声が届くまで – Create 1", file:"song1.mp3"},
- {title:"声が届くまで – Create 2", file:"song2.mp3"},
- {title:"声が届くまで – Create 3", file:"song3.mp3"},
- {title:"声が届くまで – Create 4", file:"song4.mp3"},
- {title:"声が届くまで – Create 5", file:"song5.mp3"}
-];
-
-const titles = document.querySelectorAll(".title");
-
-tracks.forEach((track,i)=>{
-  if(titles[i]){
-    titles[i].textContent = track.title;
-  }
-});
-
-</script>
 <script>
 
 const PASSWORD="kupi320";
 
 function checkPass(){
+
  if(document.getElementById("pass").value===PASSWORD){
   document.getElementById("lock").style.display="none";
  }else{
   alert("wrong password");
  }
+
 }
 
-const songs=document.querySelectorAll(".song");
-const players=document.querySelectorAll("audio");
+document.addEventListener("DOMContentLoaded",()=>{
 
-function format(t){
- const m=Math.floor(t/60);
- const s=Math.floor(t%60).toString().padStart(2,'0');
- return m+":"+s;
-}
+ const pass=document.getElementById("pass");
 
-songs.forEach((song,i)=>{
-
-if(song.classList.contains("lyrics")) return;
-
- const audio=song.querySelector("audio");
- const bar=song.querySelector(".bar");
- const progress=song.querySelector(".progress");
- const time=song.querySelector(".time");
-
-song.onclick=()=>{
-
-  if(audio.paused){
-
-   players.forEach(p=>{
-    p.pause();
-    p.closest(".song").classList.remove("playing");
-   });
-
-   audio.play();
-   song.classList.add("playing");
-
-   if("mediaSession" in navigator){
-     navigator.mediaSession.metadata = new MediaMetadata({
-       title: tracks[i].title,
-       artist: "CreateSongs",
-       album: "Private Music Room"
-     });
-   }
-
-  }else{
-
-   audio.pause();
-   song.classList.remove("playing");
-
-  }
-
-};
-
- audio.addEventListener("timeupdate",()=>{
-
-  const percent=(audio.currentTime/audio.duration)*100;
-  bar.style.width=percent+"%";
-
-  time.textContent=format(audio.currentTime)+" / "+format(audio.duration||0);
-
+ pass.addEventListener("keydown",function(e){
+  if(e.key==="Enter") checkPass();
  });
 
- progress.onclick=(e)=>{
+});
 
-  const rect=progress.getBoundingClientRect();
-  const pos=(e.clientX-rect.left)/rect.width;
-  audio.currentTime=pos*audio.duration;
+</script>
+<script>
+const tracks = [
+ {title:"声が届くまで – Create 1", file:"song1.mp3", scroll:258},
+ {title:"声が届くまで – Create 2", file:"song2.mp3", scroll:244},
+ {title:"声が届くまで – Create 3", file:"song3.mp3", scroll:234},
+ {title:"声が届くまで – Create 4", file:"song4.mp3", scroll:229},
+ {title:"声が届くまで – Create 5", file:"song5.mp3", scroll:243}
+];
+
+
+</script>
+
+<script>
+
+const albumHeader = document.querySelector(".album-header");
+
+if(albumHeader){
+
+ albumHeader.onclick = function(){
+
+  const trackPanel = document.querySelector(".album-tracks");
+
+  trackPanel.style.display =
+  trackPanel.style.display === "block" ? "none" : "block";
 
  };
 
- audio.onended=()=>{
-  song.classList.remove("playing");
+}
+
+const player = document.getElementById("player");
+const trackList = document.querySelectorAll(".track");
+
+trackList.forEach(track => {
+
+ track.onclick = () => {
+
+  if(track.classList.contains("playing")){
+   player.pause();
+   return;
+  }
+
+  trackList.forEach(t => {
+   t.classList.remove("playing");
+   const num = t.querySelector(".track-num");
+   if(num) num.textContent = Array.from(trackList).indexOf(t)+1;
+  });
+
+  track.classList.add("playing");
+  document.querySelector(".cover").classList.add("playing");
+
+  if(player.src !== track.dataset.audio){
+   player.src = track.dataset.audio;
+  }
+
+  player.play();
+
+  // イコライザー
+  track.querySelector(".track-num").innerHTML =
+  '<div class="equalizer"><span></span><span></span><span></span></div>';
+
+  // Now Playing
+  const now = document.getElementById("nowPlaying");
+  const title = document.getElementById("nowTitle");
+
+  if(title){
+   title.textContent =
+   "▶ " + track.querySelector(".track-title").textContent;
+  }
+
+  if(now){
+   now.classList.add("show");
+
+   setTimeout(()=>{
+    now.classList.remove("show");
+   },3000);
+  }
+
  };
 
 });
 
+player.onended = () => {
+
+ const current = document.querySelector(".track.playing");
+ if(!current) return;
+
+ const next = current.nextElementSibling;
+
+ trackList.forEach(t=>{
+  t.classList.remove("playing");
+  const num = t.querySelector(".track-num");
+  if(num) num.textContent = Array.from(trackList).indexOf(t)+1;
+ });
+
+ if(next && next.classList.contains("track")){
+
+  next.classList.add("playing");
+
+  next.querySelector(".track-num").innerHTML =
+  '<div class="equalizer"><span></span><span></span><span></span></div>';
+
+  player.src = next.dataset.audio;
+  player.play();
+
+ }
+
+};
+
+player.onplay = () => {
+
+ const lyrics = document.querySelector(".lyrics-box");
+ if(!lyrics) return;
+
+ lyrics.scrollTop = 0;
+
+ const duration = player.duration;
+ const start = Date.now();
+
+ const scroll = () => {
+
+  if(player.paused) return;
+
+  const elapsed = (Date.now() - start)/1000;
+  const percent = elapsed/duration;
+
+  lyrics.scrollTop =
+  percent*(lyrics.scrollHeight-lyrics.clientHeight);
+
+  if(elapsed < duration){
+   requestAnimationFrame(scroll);
+  }
+
+ };
+
+ scroll();
+
+};
+
+player.addEventListener("timeupdate",()=>{
+
+ if(!player.duration) return;
+
+ const percent = (player.currentTime/player.duration)*100;
+
+ const playing = document.querySelector(".track.playing");
+
+ if(playing){
+
+  const bar = playing.querySelector(".track-bar");
+  if(bar) bar.style.width = percent+"%";
+
+  const time = playing.querySelector(".track-time");
+  if(time){
+   time.textContent =
+   format(player.currentTime)+" / "+format(player.duration);
+  }
+
+ }
+
+});
+
+player.onpause = () => {
+
+ const playing = document.querySelector(".track.playing");
+ if(!playing) return;
+
+ const time = playing.querySelector(".track-time");
+ const duration = format(player.duration);
+
+ if(time){
+  time.textContent = duration;
+ }
+
+};
+
+function format(sec){
+
+ if(!sec) return "0:00";
+
+ const m = Math.floor(sec/60);
+ const s = Math.floor(sec%60).toString().padStart(2,"0");
+
+ return m+":"+s;
+
+}
+
 if("mediaSession" in navigator){
 
- navigator.mediaSession.setActionHandler('play', ()=>players[0].play());
+ navigator.mediaSession.setActionHandler("nexttrack",()=>{
 
- navigator.mediaSession.setActionHandler('pause', ()=>{
-   players.forEach(p=>p.pause());
+  const current = document.querySelector(".track.playing");
+  if(!current) return;
+
+  const next = current.nextElementSibling;
+
+  if(next && next.classList.contains("track")){
+   next.click();
+  }
+
+ });
+
+ navigator.mediaSession.setActionHandler("previoustrack",()=>{
+
+  const current = document.querySelector(".track.playing");
+  if(!current) return;
+
+  const prev = current.previousElementSibling;
+
+  if(prev && prev.classList.contains("track")){
+   prev.click();
+  }
+
  });
 
 }
+
 </script>
 
 </body>
