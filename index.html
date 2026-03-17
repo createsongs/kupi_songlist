@@ -925,19 +925,18 @@ document.getElementById("v3").innerText=data.Create3;
 document.getElementById("v4").innerText=data.Create4;
 document.getElementById("v5").innerText=data.Create5;
 
-const max = Math.max(
- data.Create1,
- data.Create2,
- data.Create3,
- data.Create4,
- data.Create5
-);
+const total =
+ data.Create1 +
+ data.Create2 +
+ data.Create3 +
+ data.Create4 +
+ data.Create5;
 
-document.getElementById("bar1").style.width = (data.Create1/max*100)+"%";
-document.getElementById("bar2").style.width = (data.Create2/max*100)+"%";
-document.getElementById("bar3").style.width = (data.Create3/max*100)+"%";
-document.getElementById("bar4").style.width = (data.Create4/max*100)+"%";
-document.getElementById("bar5").style.width = (data.Create5/max*100)+"%";
+document.getElementById("bar1").style.width = total > 0 ? (data.Create1/total*100)+"%" : "0%";
+document.getElementById("bar2").style.width = total > 0 ? (data.Create2/total*100)+"%" : "0%";
+document.getElementById("bar3").style.width = total > 0 ? (data.Create3/total*100)+"%" : "0%";
+document.getElementById("bar4").style.width = total > 0 ? (data.Create4/total*100)+"%" : "0%";
+document.getElementById("bar5").style.width = total > 0 ? (data.Create5/total*100)+"%" : "0%";
 
 });
 }
@@ -966,8 +965,9 @@ if(votes >= 3){
 const song = btn.dataset.song;
 
 fetch("https://script.google.com/macros/s/AKfycbwnj5dfrcG1JKi66nyXGoFFrYQHp6LS5Dh-PXbFSmiBGc07e8JIvSTA8PLQgh7t5SE/exec",{
- method:"POST",
- body:new URLSearchParams({song})
+  method:"POST",
+  mode:"no-cors",
+  body:new URLSearchParams({song})
 });
 
 votes++;
