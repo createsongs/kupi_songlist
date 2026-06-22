@@ -1,810 +1,851 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>CreateSongs</title>
-<meta name="theme-color" content="#000000">
-<link rel="apple-touch-icon" href="cover1.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
- color:white;
- background:#000;
- min-height:100svh;
- padding-bottom:40px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kupi歌えるリスト</title>
+  <style>
+    :root {
+      --bg: #fff8fb;
+      --card: #ffffff;
+      --text: #332a30;
+      --sub: #7b6c74;
+      --accent: #d9b8c5;
+      --accent-strong: #ef8b8b;
+      --line: #d67bac;
+      --shadow: 0 10px 28px rgba(177, 92, 121, .12);
+      --hero-focus-y: 0px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+ body {
+  margin: 0;
+  font-family:
+   "Hiragino Maru Gothic ProN",
+   "Hiragino Sans",
+   "Yu Gothic",
+   sans-serif;
+  background: radial-gradient(circle at top, #fffdf5 0%, #fffef8 32%, #ffffff 100%);
+  color: var(--text);
+}
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 32px;
+    }
+    .hero {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      min-height: 180px;
+      max-height: 300px;
+      overflow: hidden;
+      background: #f7dce5;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center var(--hero-focus-y);
+      display: block;
+    }
+    .sticky-area {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(10px);
+      background: rgba(252, 242, 248, .35);
+      border-bottom: 1px solid rgba(242, 215, 225, .9);
+    }
+    .inner {
+      padding: 12px 14px 10px;
+    }
+    .search-wrap {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .search-wrap input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px 16px 14px 44px;
+      font-size: 16px;
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+    .search-wrap input:focus {
+      border-color: #f1a5bd;
+      box-shadow: 0 0 0 4px rgba(245, 159, 188, .18);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      opacity: .65;
+      pointer-events: none;
+    }
+    .top-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .tabs {
+      display: inline-flex;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px;
+      box-shadow: var(--shadow);
+    }
+    .tab {
+      border: 0;
+      background: transparent;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sub);
+      cursor: pointer;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #fff;
+    }
+    .count {
+      font-size: 13px;
+      color: var(--sub);
+      white-space: nowrap;
+      padding-right: 2px;
+    }
+    .jump {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .jump::-webkit-scrollbar { display: none; }
+    .jump button {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #6c4d5a;
+      border-radius: 999px;
+      padding: 8px 11px;
+      min-width: 36px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(177, 92, 121, .08);
+    }
+    .jump button:hover { border-color: #faf0e6; }
+    .section { padding: 14px; }
+    .empty {
+      display: none;
+      padding: 36px 22px 20px;
+      text-align: center;
+      color: var(--sub);
+      font-size: 14px;
+    }
+    .song-list {
+      display: grid;
+      gap: 10px;
+    }
+.song-item {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 12px;
+  align-items: start;
+  background: var(--card);
+  border: 1px solid #f6dbe5;
+  border-radius: 18px;
+  padding: 12px 13px;
+  box-shadow: var(--shadow);
+  scroll-margin-top: 174px;
+
+  cursor: pointer;
+  transition: transform .08s ease;
 }
 
-/* header */
-header{
- text-align:center;
- padding:50px 20px 10px;
-}
-header h1{
- letter-spacing:4px;
- font-weight:300;
- margin:0;
- font-size:30px;
-}
-header p{
- opacity:.7;
- margin-top:6px;
+.song-item:active {
+  transform: scale(.97);
+}    .initial {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffe2ec, #ffd3e1);
+      color: #a25070;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+.meta { min-width: 0; }
+
+.title {
+  margin-top: 2px;
+  color: #7b6c74;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
-/* grid layout */
-.container{
- max-width:900px;
- margin:auto;
- padding:10px;
- display:grid;
- grid-template-columns:200px 1fr;
- grid-template-rows:auto auto;
- gap:10px;
+.artist {
+  margin-top: 2px;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+  word-break: break-word;
+}
+    .fav-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      font-size: 23px;
+      line-height: 1;
+      padding: 4px 2px;
+      color: #d7b3c0;
+      align-self: center;
+    }
+    .fav-btn.active {
+      color: #ffb700;
+      filter: drop-shadow(0 4px 10px rgba(255, 183, 0, .2));
+    }
+    .footer-space { height: 18px; }
+    @media (max-width: 480px) {
+      .inner { padding: 10px 10px 9px; }
+      .section { padding: 10px; }
+      .song-item { grid-template-columns: 38px 1fr auto; padding: 11px; border-radius: 16px; }
+      .initial { width: 38px; height: 38px; border-radius: 12px; font-size: 14px; }
+      .title { font-size: 15px; }
+      .artist { font-size: 13px; }
+      .count { font-size: 12px; }
+    }
+  .toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-@media (max-width:600px){
-
-.container{
- grid-template-columns:1fr;
+.toast.show {
+  opacity: 1;
 }
-
-.song.lyrics{
- grid-column:1 / -1;
- padding:0 16px;
-}
-
-}
-
-/* song card */
-.song{
- background:rgba(255,255,255,.05);
- border-radius:12px;
- padding:12px;
- border:1px solid rgba(255,255,255,.12);
- transition:.25s;
-}
-
-.song.playing{
- box-shadow:0 0 20px rgba(0,220,255,.9);
- border-color:#00eaff;
-}
-
-/* cover */
-.cover{
- width:100%;
- max-width:260px;
- display:block;
-}
-
-
-
-/* 再生中ジャケット発光 */
-.cover.playing{
-animation:coverGlow 3s ease-in-out infinite;
-}
-
-@keyframes coverGlow{
-0%{
-box-shadow:0 0 0 rgba(0,120,255,0);
-}
-50%{
-box-shadow:
-0 0 20px rgba(90,140,255,0.8),
-0 0 45px rgba(90,140,255,0.6);
-}
-100%{
-box-shadow:0 0 0 rgba(0,120,255,0);
-}
-}
-
-.title{
- margin-top:6px;
- font-size:13px;
- opacity:.9;
- text-align:center;
-}
-/* button */
-.play{
- margin-top:8px;
- width:100%;
- padding:6px;
- background:#111;
- border:1px solid #333;
- color:white;
- border-radius:6px;
-}
-
-/* progress */
-.progress{
- height:6px;
- background:#333;
- border-radius:10px;
- margin-top:8px;
- cursor:pointer;
-}
-
-.bar{
- height:100%;
- width:0%;
- border-radius:10px;
- background:linear-gradient(90deg,#00eaff,#4b7cff);
-}
-
-.time{
- font-size:11px;
- opacity:.7;
- margin-top:3px;
-}
-
-.lyrics-box{
- font-size:13px;
- line-height:2;
- max-height:500px;
- overflow-y:auto;
- margin:0 auto;
-}
-
-@media (max-width:600px){
-
-.lyrics-box{
- font-size:13px;
- line-height:1.9;
- text-align:left;
- height:360px;
- overflow-y:auto;
- padding:12px 14px;
- width:60%;
- margin:auto;
-}
-
-}
-
-.song.lyrics{
- grid-column:1 / -1;
-}
-
-.song.lyrics{
- display:flex;
- flex-direction:column;
-}
-
-.song.lyrics{
- min-width:0;
-}
-
-.song.lyrics{
- background:none;
- border:none;
- padding:0;
-}
-
-.album-cover{
- grid-column:1;
- grid-row:1;
-}
-
-.album-tracks{
- grid-column:2;
- grid-row:1;
-}
-
-.track{
+  
+/* ===== SOCIAL ICON BAR ===== */
+.social-grid{
 display:flex;
-flex-direction:column;
-padding:12px;
-border-bottom:1px solid #333;
+gap:18px;
+overflow-x:auto;
+padding:8px 4px 12px;
+margin-top:6px;
+}
+.social-grid::-webkit-scrollbar{display:none;}
+
+.social-item{
+flex:0 0 auto;
+text-align:center;
+font-size:12px;
+font-weight:600;
+color:#555;
+text-decoration:none;
+}
+
+.social-item img{
+width:42px;
+height:42px;
+display:block;
+margin:0 auto 6px;
+object-fit:cover;
+border-radius:50%;
+}
+
+/* brand color circles */
+.youtube img{background:#FF0000;}
+.instagram img{background:#E4405F;}
+.tiktok img{background:#000000;}
+.spotify img{background:#1DB954;}
+.lyrics img{background:#f59fbc;}
+.shop img{background:#ff9f43;}
+
+.social-item img:hover{
+transform:scale(1.08);
+}
+
+/* ===== RANDOM BUTTON ===== */
+.random-btn{
+margin:6px 0 12px;
+background:linear-gradient(135deg,#f59fbc,#ec6d96);
+color:#fff;
+border:none;
+border-radius:14px;
+padding:10px 14px;
+font-weight:700;
 cursor:pointer;
 }
 
-.track:hover{
-background:#111;
+/* ===== RECENT REQUEST ===== */
+.recent-box{
+background:#fff;
+border:1px solid #f6dbe5;
+border-radius:16px;
+padding:10px 12px;
+margin-bottom:10px;
+box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.recent-title{
+font-size:13px;
+color:#7b6c74;
+font-weight:700;
+margin-bottom:6px;
+}
+.recent-list{
+display:flex;
+flex-direction:column;
+gap:4px;
+font-size:14px;
 }
 
-.track-row{
+/* ===== TOP BUTTON ===== */
+.top-btn{
+position:fixed;
+right:16px;
+bottom:22px;
+width:46px;
+height:46px;
+border-radius:50%;
+background:#f59fbc;
+color:#fff;
 display:flex;
 align-items:center;
-gap:10px;
+justify-content:center;
+font-size:18px;
+box-shadow:0 6px 16px rgba(0,0,0,.25);
+cursor:pointer;
+z-index:999;
 }
-
-.track-num{
- width:28px;
- text-align:center;
- display:flex;
- justify-content:center;
- align-items:center;
+.info-text{
+  font-size:12px;
+  color:#7b6c74;
+  margin:6px 2px 10px;
 }
-
-.track-title{
-flex:1;
-min-width:110px;
-}
-
-.track-time{
-opacity:0.7;
-font-size:12px;
-}
-
-.track-progress{
-height:4px;
-background:#222;
-border-radius:6px;
-margin-top:6px;
-overflow:hidden;
-}
-
-.track-bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#00ffe5,#4b7cff);
-border-radius:6px;
-}
-
-/* 再生中 */
-
-.track.playing{
-color:#00ffe5;
-text-shadow:
-0 0 6px #00ffe5,
-0 0 12px #00ffe5;
-}
-
-.track.playing .track-bar{
-box-shadow:
-0 0 6px #00ffe5,
-0 0 12px #00ffe5;
-}
-
-.track.playing .track-num{
-color:#00ffe5;
-text-shadow:
-0 0 6px #00ffe5;
-}
-
-.equalizer{
-display:inline-flex;
-gap:2px;
-margin-right:4px;
-}
-
-.equalizer span{
-width:3px;
-height:10px;
-background:#00ffe5;
-display:block;
-animation:eq 1s infinite ease-in-out;
-}
-
-.equalizer span:nth-child(2){
-animation-delay:0.2s;
-}
-
-.equalizer span:nth-child(3){
-animation-delay:0.4s;
-}
-
-@keyframes eq{
-0%,100%{height:4px}
-50%{height:12px}
-}
-
-
-.vote-text{
- text-align:center;
- font-size:14px;
- opacity:0;
- margin:10px auto 6px auto;
- padding:8px 12px;
- border-radius:8px;
- max-width:420px;
-
- animation:fadeIn 2.5s ease forwards;
-}
-
-@keyframes fadeIn{
- from{
-  opacity:0;
-  transform:translateY(6px);
- }
- to{
-  opacity:0.9;
-  transform:translateY(0);
- }
-}
-
-.play-guide{
- text-align:center;
- font-size:14px;
- opacity:1.0;
- margin-bottom:8px;
-}
-
-.password-screen{
- min-height:100svh;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- text-align:center;
- padding:24px;
- background:#000;
- color:white;
-}
-
-.password-screen h1{
- font-size:28px;
- font-weight:300;
- letter-spacing:2px;
-}
-
-.password-screen p{
- line-height:1.9;
- opacity:.8;
-}
-
-.password-screen input{
- margin-top:18px;
- padding:12px;
- width:240px;
- border-radius:8px;
- border:1px solid #444;
- background:#111;
- color:white;
- text-align:center;
-}
-
-.password-screen button{
- margin-top:10px;
- padding:10px 28px;
- border-radius:8px;
- border:1px solid #555;
- background:#111;
- color:white;
- cursor:pointer;
-}
-
-#errorText{
- color:#ff8080;
- font-size:13px;
-}
-
-
 </style>
+  <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#f59fbc">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
-
 <body>
-<div id="passwordScreen" class="password-screen">
-  <h1>投票受付は終了しました</h1>
-  <p>
-    たくさんのご投票ありがとうございました✨<br>
-    選ばれた楽曲ページは関係者のみ閲覧できます。
-  </p>
+  <div class="app">
+    <div class="hero">
+      <img src="header2.png" alt="kupi header">
+    </div>
 
-  <input type="password" id="passwordInput" placeholder="パスワードを入力">
-  <button onclick="checkPassword()">ENTER</button>
-  <p id="errorText"></p>
+    <div class="sticky-area">
+      <div class="inner">
+        <div class="search-wrap">
+          <span class="search-icon">🔎</span>
+          <input id="searchBox" type="text" placeholder="曲名・アーティスト・メモで検索">
+        </div>
+<div class="info-text">
+🎙 アーティスト順表示｜曲名・アーティスト名で検索できます
+</div>
+        
+<div class="recent-box">
+<div class="recent-title">最近リクエストされた曲</div>
+<div class="recent-list" id="recentList"></div>
+<button onclick="localStorage.removeItem('recentSongs');renderRecent();" style="margin-top:6px;font-size:12px;border:none;background:#f2d7e1;padding:6px 10px;border-radius:8px;cursor:pointer;">
+履歴リセット
+</button>
+</div>
+<div class="info-text">
+気軽にリクエストしてね💕
+</div>
+<div class="social-grid">
+
+<a class="social-item instagram" href="https://www.instagram.com/kupi.17live/" target="_blank">
+<img src="Instagram.png">
+Instagram
+</a>
+
 </div>
 
-<div id="mainContent" style="display:none;">
+<div class="top-row">
+          <div class="tabs">
+            <button class="tab active" data-mode="all">全リスト</button>
+            <button class="tab" data-mode="favorites">お気に入り</button>
+          </div>
+          <div class="count" id="countText">205曲</div>
+        </div>
 
-<header>
-<h1>Create Songs by kuma</h1>
-<p>Private Music Room</p>
-</header>
+        <div class="jump" id="jumpBar">
+          <button type="button" data-jump="あ">あ</button>
+          <button type="button" data-jump="か">か</button>
+          <button type="button" data-jump="さ">さ</button>
+          <button type="button" data-jump="た">た</button>
+          <button type="button" data-jump="な">な</button>
+          <button type="button" data-jump="は">は</button>
+          <button type="button" data-jump="ま">ま</button>
+          <button type="button" data-jump="や">や</button>
+          <button type="button" data-jump="ら">ら</button>
+          <button type="button" data-jump="わ">わ</button>
+        </div>
+      </div>
+    </div>
 
-<div class="container">
+    <div class="section">
+      <div id="emptyState" class="empty">見つからなかったよ</div>
+      <div class="song-list" id="songList"></div>
+      <div class="footer-space"></div>
+    </div>
+  </div>
 
-<div class="album-header">
-<img class="cover" src="cover1.png">
-</div>
-
-<div class="album-tracks">
-
-<div class="track" data-audio="song1.mp3">
-<div class="track-row">
-<span class="track-num">1</span>
-<span class="track-title">Create 1</span>
-<span class="track-time">4:18</span>
-</div>
-
-<div class="track-progress">
-<div class="track-bar"></div>
-</div>
-</div>
-
-
-<div class="track" data-audio="song2.mp3">
-<div class="track-row">
-<span class="track-num">2</span>
-<span class="track-title">Create 2</span>
-<span class="track-time">4:04</span>
-</div>
-
-<div class="track-progress">
-<div class="track-bar"></div>
-</div>
-</div>
-
-
-<div class="track" data-audio="song3.mp3">
-<div class="track-row">
-<span class="track-num">3</span>
-<span class="track-title">Create 3</span>
-<span class="track-time">3:54</span>
-</div>
-
-<div class="track-progress">
-<div class="track-bar"></div>
-</div>
-</div>
-
-
-<div class="track" data-audio="song4.mp3">
-<div class="track-row">
-<span class="track-num">4</span>
-<span class="track-title">Create 4</span>
-<span class="track-time">3:49</span>
-</div>
-
-<div class="track-progress">
-<div class="track-bar"></div>
-</div>
-</div>
-
-
-<div class="track" data-audio="song5.mp3">
-<div class="track-row">
-<span class="track-num">5</span>
-<span class="track-title">Create 5</span>
-<span class="track-time">4:03</span>
-</div>
-
-<div class="track-progress">
-<div class="track-bar"></div>
-</div>
-</div>
-
-<audio id="player"></audio>
-
-</div>
-</div>
-
-<div class="play-guide">
-▶ 曲名タップで再生 / 再度タップで停止
-</div>
-
-<div class="vote-text">
-🎧 Demo Vocal Version 🎧<br>
-歌唱は仮歌です / kupiではありません<br>
-</div>
-
-<div class="song lyrics">
-
-<div class="lyrics-box">
-
-<h3>Lyrics</h3>
-
-<p>
-
-こんばんは<br>
-くぴです<br><br>
-
-いくよ！<br><br>
-
-静かな部屋 リングライト<br>
-スマホの画面 スイッチオン<br>
-通知が鳴る コメント流れる<br>
-今日も始まる くぴのステージ<br><br>
-
-「こんばんは」って 声を出せば<br>
-画面の向こう 誰かが笑う<br>
-トントン弾む 白いボール<br>
-大好きな音 背中押す<br><br>
-
-泣きたい夜も 負けそうな日も<br>
-声を出せば 少し強くなれた<br>
-いま 響かせる<br><br>
-
-歌え！<br>
-この小さな部屋から<br>
-声が届くまで 何度でも<br>
-泣いた夜さえ 笑い飛ばして<br>
-未来まで 響かせろ<br><br>
-
-声が届くまで 声が届くまで<br><br>
-
-長い夜を 越えてきた<br>
-止まったみたいな 時間の中<br>
-それでもまた 前を向いて<br>
-ここに立ってる<br><br>
-
-白いボールが 弾むように<br>
-何度だって 立ち上がる<br>
-小さな夢を 今日も<br>
-追いかけてる<br><br>
-
-遠くてもいい 小さくてもいい<br>
-この声が 誰かに届くなら<br><br>
-
-歌え！<br>
-この小さな部屋から<br>
-声が届くまで 何度でも<br>
-泣いた夜さえ 笑い飛ばして<br>
-未来まで 響かせろ<br><br>
-
-走れ！<br>
-どんな昨日でも<br>
-今日という日を 駆け抜けて<br><br>
-
-歌え！<br>
-まだ終わらない この物語<br>
-声が届くまで<br><br>
-
-今日もありがとう<br>
-また<br>
-こんばんは
-
-</p>
-
-</div>
-</div>
-</div>
-
-
-
-<script>
-const tracks = [
- {title:"声が届くまで – Create 1", file:"song1.mp3", scroll:258},
- {title:"声が届くまで – Create 2", file:"song2.mp3", scroll:244},
- {title:"声が届くまで – Create 3", file:"song3.mp3", scroll:234},
- {title:"声が届くまで – Create 4", file:"song4.mp3", scroll:229},
- {title:"声が届くまで – Create 5", file:"song5.mp3", scroll:243}
+  <script>
+    const songs = [{"initial": "あ", "artist": "AI", "title": "Story"},
+{"initial": "あ", "artist": "相川七瀬", "title": "恋心"},
+{"initial": "あ", "artist": "相川七瀬", "title": "BREAK OUT！"},
+{"initial": "あ", "artist": "相川七瀬", "title": "夢見る少女じゃいられない"},
+{"initial": "あ", "artist": "aiko", "title": "カブトムシ"},
+{"initial": "あ", "artist": "aiko", "title": "桜の時"},
+{"initial": "あ", "artist": "aiko", "title": "ボーイフレンド"},
+{"initial": "あ", "artist": "Acid Black Cherry", "title": "Black Cherry"},
+{"initial": "あ", "artist": "Ado", "title": "うっせぇわ"},
+{"initial": "あ", "artist": "Ado", "title": "踊"},
+{"initial": "あ", "artist": "Ado", "title": "ギラギラ"},
+{"initial": "あ", "artist": "Ado", "title": "私は最強"},
+{"initial": "あ", "artist": "安室奈美恵", "title": "Don't wanna cry"},
+{"initial": "あ", "artist": "安室奈美恵 with SUPER MONKEY'S", "title": "PARADISE TRAIN"},
+{"initial": "あ", "artist": "絢香", "title": "ずっとキミと"},
+{"initial": "あ", "artist": "絢香", "title": "空と君のあいだに"},
+{"initial": "あ", "artist": "絢香", "title": "にじいろ"},
+{"initial": "あ", "artist": "絢香", "title": "三日月"},
+{"initial": "あ", "artist": "絢香", "title": "やさしさに包まれたなら"},
+{"initial": "あ", "artist": "アンジェラ・アキ", "title": "This Love"},
+{"initial": "あ", "artist": "アンジェラ・アキ", "title": "手紙～拝啓十五の君へ～"},
+{"initial": "あ", "artist": "アンジェラ・アキ", "title": "始まりのバラード"},
+{"initial": "い", "artist": "石川さゆり", "title": "津軽海峡・冬景色"},
+{"initial": "い", "artist": "伊藤由奈", "title": "ENDLESS STORY"},
+{"initial": "い", "artist": "伊藤由奈", "title": "Precious"},
+{"initial": "い", "artist": "井上あずみ", "title": "君をのせて"},
+{"initial": "い", "artist": "今井美樹", "title": "PRIDE"},
+{"initial": "い", "artist": "イルカ", "title": "なごり雪"},
+{"initial": "い", "artist": "岩崎良美", "title": "タッチ"},
+{"initial": "う", "artist": "宇多田ヒカル", "title": "Addicted To You"},
+{"initial": "う", "artist": "宇多田ヒカル", "title": "Automatic"},
+{"initial": "う", "artist": "宇多田ヒカル", "title": "First Love"},
+{"initial": "う", "artist": "宇多田ヒカル", "title": "Flavor Of Life"},
+{"initial": "う", "artist": "宇野ゆう子", "title": "サザエさん"},
+{"initial": "う", "artist": "Uru", "title": "それを愛と呼ぶなら"},
+{"initial": "え", "artist": "瑛太", "title": "香水"},
+{"initial": "え", "artist": "EXILE", "title": "道"},
+{"initial": "え", "artist": "Every Little Thing", "title": "Time goes by"},
+{"initial": "え", "artist": "Every Little Thing", "title": "出逢った頃のように"},
+{"initial": "え", "artist": "Every Little Thing", "title": "For the moment"},
+{"initial": "え", "artist": "Every Little Thing", "title": "fragile"},
+{"initial": "え", "artist": "Aimer", "title": "残響散歌"},
+{"initial": "お", "artist": "大黒摩季", "title": "あなただけ見つめてる"},
+{"initial": "お", "artist": "大塚愛", "title": "甘えんぼ"},
+{"initial": "お", "artist": "大塚愛", "title": "金魚花火"},
+{"initial": "お", "artist": "大塚愛", "title": "黒毛和牛上塩タン焼680円"},
+{"initial": "お", "artist": "大塚愛", "title": "さくらんぼ"},
+{"initial": "お", "artist": "大塚愛", "title": "大好きだよ。"},
+{"initial": "お", "artist": "大塚愛", "title": "プラネタリウム"},
+{"initial": "お", "artist": "大塚愛", "title": "桃ノ花ビラ"},
+{"initial": "お", "artist": "大槻真希", "title": "RUN! RUN! RUN!"},
+{"initial": "お", "artist": "岡本真夜", "title": "TOMORROW"},
+{"initial": "お", "artist": "尾崎豊", "title": "I LOVE YOU"},
+{"initial": "お", "artist": "鬼束ちひろ", "title": "月光"},
+{"initial": "お", "artist": "Official髭男dism", "title": "I LOVE..."},
+{"initial": "お", "artist": "Official髭男dism", "title": "Cry Baby"},
+{"initial": "お", "artist": "Official髭男dism", "title": "Pretender"},
+{"initial": "か", "artist": "海援隊", "title": "贈る言葉"},
+{"initial": "か", "artist": "華原朋美", "title": "I'm proud"},
+{"initial": "か", "artist": "Kanaria", "title": "酔いどれ知らず"},
+{"initial": "き", "artist": "木村カエラ", "title": "Butterfly"},
+{"initial": "き", "artist": "木村カエラ", "title": "リルラ リルハ"},
+{"initial": "き", "artist": "キャンディーズ", "title": "年下の男の子"},
+{"initial": "き", "artist": "Kiroro", "title": "長い間"},
+{"initial": "く", "artist": "工藤静香", "title": "くちびるから媚薬"},
+{"initial": "く", "artist": "工藤静香", "title": "Blue Velvet"},
+{"initial": "く", "artist": "久保田早紀", "title": "異邦人"},
+{"initial": "く", "artist": "ClariS", "title": "コネクト"},
+{"initial": "く", "artist": "クリス・ハート", "title": "I LOVE YOU"},
+{"initial": "く", "artist": "GLAY", "title": "HOWEVER"},
+{"initial": "く", "artist": "GLAY", "title": "誘惑"},
+{"initial": "け", "artist": "K", "title": "Only Human"},
+{"initial": "こ", "artist": "倖田來未", "title": "愛のうた"},
+{"initial": "こ", "artist": "倖田來未", "title": "キューティーハニー"},
+{"initial": "こ", "artist": "倖田來未", "title": "Butterfly"},
+{"initial": "こ", "artist": "倖田來未", "title": "you"},
+{"initial": "こ", "artist": "GO!GO!7188", "title": "浮舟"},
+{"initial": "こ", "artist": "GO!GO!7188", "title": "こいのうた"},
+{"initial": "こ", "artist": "GO!GO!7188", "title": "ジェットにんじん"},
+{"initial": "こ", "artist": "GO!GO!7188", "title": "太陽"},
+{"initial": "こ", "artist": "GO!GO!7188", "title": "ひょっこりひょうたん島"},
+{"initial": "さ", "artist": "ZARD", "title": "負けないで"},
+{"initial": "さ", "artist": "酒井法子", "title": "碧いうさぎ"},
+{"initial": "さ", "artist": "サザンオールスターズ", "title": "TSUNAMI"},
+{"initial": "し", "artist": "椎名林檎", "title": "アイデンティティ"},
+{"initial": "し", "artist": "椎名林檎", "title": "同じ夜"},
+{"initial": "し", "artist": "椎名林檎", "title": "歌舞伎町の女王"},
+{"initial": "し", "artist": "椎名林檎", "title": "ギブス"},
+{"initial": "し", "artist": "椎名林檎", "title": "幸福論"},
+{"initial": "し", "artist": "椎名林檎", "title": "ここでキスして。"},
+{"initial": "し", "artist": "椎名林檎", "title": "すべりだい"},
+{"initial": "し", "artist": "椎名林檎", "title": "正しい街"},
+{"initial": "し", "artist": "椎名林檎", "title": "月に負け犬"},
+{"initial": "し", "artist": "椎名林檎", "title": "罪と罰"},
+{"initial": "し", "artist": "椎名林檎", "title": "本能"},
+{"initial": "し", "artist": "椎名林檎", "title": "丸の内サディスティック"},
+{"initial": "し", "artist": "JITTERIN'JINN", "title": "夏祭り"},
+{"initial": "し", "artist": "篠原涼子", "title": "恋しさと せつなさと 心強さと"},
+{"initial": "し", "artist": "島谷ひとみ", "title": "亜麻色の髪の乙女"},
+{"initial": "し", "artist": "Janne Da Arc", "title": "月光花"},
+{"initial": "し", "artist": "JUJU", "title": "あゝ無情"},
+{"initial": "し", "artist": "JUJU", "title": "If"},
+{"initial": "し", "artist": "JUJU", "title": "異邦人"},
+{"initial": "し", "artist": "JUJU", "title": "この夜を止めてよ"},
+{"initial": "し", "artist": "JUJU", "title": "DESIRE -情熱-"},
+{"initial": "し", "artist": "JUJU", "title": "なごり雪"},
+{"initial": "し", "artist": "JUJU", "title": "Hello, Again ～昔からある場所～"},
+{"initial": "し", "artist": "JUJU", "title": "PRESENT"},
+{"initial": "し", "artist": "JUJU", "title": "また明日..."},
+{"initial": "し", "artist": "JUJU", "title": "まちぶせ"},
+{"initial": "し", "artist": "JUJU", "title": "やさしさで溢れるように"},
+{"initial": "し", "artist": "JUJU", "title": "ラストシーン"},
+{"initial": "し", "artist": "JUDY AND MARY", "title": "Over Drive"},
+{"initial": "し", "artist": "JUDY AND MARY", "title": "クラッシック"},
+{"initial": "し", "artist": "JUDY AND MARY", "title": "散歩道"},
+{"initial": "し", "artist": "JUDY AND MARY", "title": "そばかす"},
+{"initial": "す", "artist": "鈴木愛理", "title": "最強の推し"},
+{"initial": "す", "artist": "SPEED", "title": "White Love"},
+{"initial": "す", "artist": "SPEED", "title": "my graduation"},
+{"initial": "す", "artist": "スピッツ", "title": "チェリー"},
+{"initial": "せ", "artist": "SEKAI NO OWARI", "title": "スターライトパレード"},
+{"initial": "そ", "artist": "ZONE", "title": "secret base 〜君がくれたもの〜"},
+{"initial": "た", "artist": "高橋洋子", "title": "残酷な天使のテーゼ"},
+{"initial": "た", "artist": "竹内まりや", "title": "いのちの歌"},
+{"initial": "た", "artist": "DALI", "title": "ムーンライト伝説"},
+{"initial": "ち", "artist": "ちゃんみな", "title": "ハレンチ"},
+{"initial": "つ", "artist": "tuki.", "title": "晩餐歌"},
+{"initial": "つ", "artist": "tuki.", "title": "ひゅるりらぱっぱ"},
+{"initial": "と", "artist": "Do As Infinity", "title": "深い森"},
+{"initial": "と", "artist": "徳永英明", "title": "壊れかけのRadio"},
+{"initial": "と", "artist": "徳永英明", "title": "レイニーブルー"},
+{"initial": "と", "artist": "DREAMS COME TRUE", "title": "やさしいキスをして"},
+{"initial": "と", "artist": "DREAMS COME TRUE", "title": "LOVE LOVE LOVE"},
+{"initial": "な", "artist": "中島美嘉", "title": "ORION"},
+{"initial": "な", "artist": "中島美嘉", "title": "GLAMOROUS SKY"},
+{"initial": "な", "artist": "中島美嘉", "title": "STARS"},
+{"initial": "な", "artist": "中島美嘉", "title": "雪の華"},
+{"initial": "な", "artist": "中島みゆき", "title": "糸"},
+{"initial": "な", "artist": "中島みゆき", "title": "空と君のあいだに"},
+{"initial": "な", "artist": "中島みゆき", "title": "旅人のうた"},
+{"initial": "な", "artist": "中森明菜", "title": "DESIRE -情熱-"},
+{"initial": "に", "artist": "西野カナ", "title": "Always"},
+{"initial": "は", "artist": "PUFFY", "title": "愛のしるし"},
+{"initial": "は", "artist": "PUFFY", "title": "アジアの純真"},
+{"initial": "は", "artist": "PUFFY", "title": "これが私の生きる道"},
+{"initial": "は", "artist": "浜崎あゆみ", "title": "M"},
+{"initial": "は", "artist": "浜崎あゆみ", "title": "SEASONS"},
+{"initial": "は", "artist": "浜崎あゆみ", "title": "SCAR"},
+{"initial": "は", "artist": "浜崎あゆみ", "title": "teddy bear"},
+{"initial": "は", "artist": "Hump Back", "title": "拝啓、少年よ"},
+{"initial": "ひ", "artist": "B-DASH", "title": "ちょ"},
+{"initial": "ひ", "artist": "B.B.クィーンズ", "title": "おどるポンポコリン"},
+{"initial": "ひ", "artist": "氷川きよし", "title": "限界突破×サバイバー"},
+{"initial": "ひ", "artist": "一青窈", "title": "ハナミズキ"},
+{"initial": "ひ", "artist": "平原綾香", "title": "Jupiter"},
+{"initial": "ひ", "artist": "hiro", "title": "Treasure"},
+{"initial": "ふ", "artist": "福山雅治", "title": "桜坂"},
+{"initial": "ふ", "artist": "福山雅治", "title": "Squall"},
+{"initial": "ほ", "artist": "放課後ティータイム", "title": "Don't say lazy"},
+{"initial": "ほ", "artist": "放課後ティータイム", "title": "NO, Thank You!"},
+{"initial": "ほ", "artist": "放課後ティータイム", "title": "U&I"},
+{"initial": "ほ", "artist": "ポケットビスケッツ", "title": "YELLOW YELLOW HAPPY"},
+{"initial": "ほ", "artist": "BONNIE PINK", "title": "Last Kiss"},
+{"initial": "ほ", "artist": "Whiteberry", "title": "夏祭り"},
+{"initial": "ま", "artist": "My Little Lover", "title": "Hello, Again 〜昔からある場所〜"},
+{"initial": "ま", "artist": "mao", "title": "夢をかなえてドラえもん"},
+{"initial": "ま", "artist": "松たか子", "title": "Let It Go～ありのままで～"},
+{"initial": "ま", "artist": "松田聖子", "title": "赤いスイートピー"},
+{"initial": "ま", "artist": "松田聖子", "title": "瑠璃色の地球"},
+{"initial": "ま", "artist": "松任谷由実", "title": "春よ、来い"},
+{"initial": "ま", "artist": "松任谷由実", "title": "まちぶせ"},
+{"initial": "ま", "artist": "松任谷由実", "title": "真夏の夜の夢"},
+{"initial": "ま", "artist": "松任谷由実", "title": "やさしさに包まれたなら"},
+{"initial": "ま", "artist": "松任谷由実", "title": "ルージュの伝言"},
+{"initial": "ま", "artist": "松本英子", "title": "Squall"},
+{"initial": "み", "artist": "MISIA", "title": "逢いたくていま"},
+{"initial": "み", "artist": "MISIA", "title": "アイノカタチ"},
+{"initial": "み", "artist": "MISIA", "title": "Everything"},
+{"initial": "や", "artist": "矢井田瞳", "title": "How?"},
+{"initial": "や", "artist": "矢井田瞳", "title": "B'coz I Love You"},
+{"initial": "や", "artist": "山口百恵", "title": "プレイバック part 2"},
+{"initial": "ゆ", "artist": "YUI", "title": "again"},
+{"initial": "ゆ", "artist": "YUI", "title": "Happy Birthday to you you"},
+{"initial": "ゆ", "artist": "YUI", "title": "Rolling star"},
+{"initial": "ゆ", "artist": "YUI for 雨音薫", "title": "Good-bye days"},
+{"initial": "ゆ", "artist": "YUI for 雨音薫", "title": "Skyline"},
+{"initial": "ゆ", "artist": "優里", "title": "ドライフラワー"},
+{"initial": "ゆ", "artist": "優里", "title": "ベテルギウス"},
+{"initial": "ゆ", "artist": "優里", "title": "レオ"},
+{"initial": "よ", "artist": "YOASOBI", "title": "夜に駆ける"},
+{"initial": "よ", "artist": "米津玄師", "title": "IRIS OUT"},
+{"initial": "よ", "artist": "米津玄師", "title": "Lemon"},
+{"initial": "よ", "artist": "米津玄師×菅田将暉", "title": "灰色と青"},
+{"initial": "り", "artist": "LiSA", "title": "紅蓮華"},
+{"initial": "り", "artist": "LiSA", "title": "炎"},
+{"initial": "り", "artist": "Little Glee Monster", "title": "放課後ハイファイブ"},
+{"initial": "り", "artist": "緑黄色社会", "title": "花になって"},
+{"initial": "る", "artist": "Le Couple", "title": "ひだまりの詩"},
+{"initial": "れ", "artist": "レベッカ", "title": "フレンズ"},
+{"initial": "れ", "artist": "レミオロメン", "title": "粉雪"},
+{"initial": "れ", "artist": "レミオロメン", "title": "3月9日"},
+{"initial": "わ", "artist": "和楽器バンド", "title": "天ノ弱"},
+{"initial": "わ", "artist": "和楽器バンド", "title": "CLEAN"},
+{"initial": "わ", "artist": "和楽器バンド", "title": "Starlight"},
+{"initial": "わ", "artist": "渡辺美里", "title": "My Revolution"}
 ];
+    const songList = document.getElementById('songList');
+    const searchBox = document.getElementById('searchBox');
+    const countText = document.getElementById('countText');
+    const emptyState = document.getElementById('emptyState');
+    const tabs = document.querySelectorAll('.tab');
+    const jumpButtons = document.querySelectorAll('[data-jump]');
+    const FAVORITES_KEY = 'mao-song-favorites-v1';
 
+    let mode = 'all';
+    let keyword = '';
 
-</script>
+    function loadFavorites() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
+      } catch (e) {
+        return new Set();
+      }
+    }
 
-<script>
+    let favorites = loadFavorites();
 
-const albumHeader = document.querySelector(".album-header");
+    function saveFavorites() {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+    }
 
-if(albumHeader){
+    function songId(song) {
+      return [song.initial, song.title, song.artist, song.memo].join('||');
+    }
 
- albumHeader.onclick = function(){
+    function matches(song) {
+      const text = `${song.initial} ${song.title} ${song.artist} ${song.memo}`.toLowerCase();
+      const hitKeyword = !keyword || text.includes(keyword);
+      const hitMode = mode === 'all' || favorites.has(songId(song));
+      return hitKeyword && hitMode;
+    }
 
-  const trackPanel = document.querySelector(".album-tracks");
+    function render() {
+      const filtered = songs.filter(matches);
 
-  trackPanel.style.display =
-  trackPanel.style.display === "block" ? "none" : "block";
+      songList.innerHTML = filtered.map(song => {
+        const id = songId(song);
+        const isFav = favorites.has(id);
+        const memoHtml = song.memo ? `<div class="memo">🎼 ${escapeHtml(song.memo)}</div>` : '';
+        return `
+          <div class="song-item" data-initial="${escapeAttr(song.initial)}" data-id="${escapeAttr(id)}">
+            <div class="initial">${escapeHtml(song.initial)}</div>
+            <div class="meta">
+             <div class="title">${escapeHtml(song.artist)}</div>
+             <div class="artist">${escapeHtml(song.title)}</div>
+              ${memoHtml}
+            </div>
+            <button class="fav-btn ${isFav ? 'active' : ''}" type="button" aria-label="favorite">${isFav ? '★' : '☆'}</button>
+          </div>
+        `;
+      }).join('');
 
- };
+      countText.textContent = `${filtered.length}曲`;
+      emptyState.style.display = filtered.length ? 'none' : 'block';
 
-}
+      document.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const item = e.currentTarget.closest('.song-item');
+          const id = item.dataset.id;
+          if (favorites.has(id)) {
+            favorites.delete(id);
+          } else {
+            favorites.add(id);
+          }
+          saveFavorites();
+          render();
+        });
+      });
+    }
 
-const player = document.getElementById("player");
-player.setAttribute("x-webkit-airplay","allow");
-player.setAttribute("playsinline","");
-player.setAttribute("webkit-playsinline","");
-const trackList = document.querySelectorAll(".track");
+    function jumpTo(letter) {
+      const items = [...document.querySelectorAll('.song-item')];
+      const target = items.find(item => (item.dataset.initial || '').startsWith(letter));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
 
-trackList.forEach(track => {
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
 
- track.onclick = () => {
+    function escapeAttr(text) {
+      return escapeHtml(text).replaceAll('`', '&#96;');
+    }
 
-if(track.classList.contains("playing")){
+    searchBox.addEventListener('input', (e) => {
+      keyword = e.target.value.trim().toLowerCase();
+      render();
+    });
 
- if(player.paused){
-  player.play();
- }else{
-  player.pause();
- }
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        mode = tab.dataset.mode;
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        render();
+      });
+    });
 
- return;
-}
+    jumpButtons.forEach(btn => {
+      btn.addEventListener('click', () => jumpTo(btn.dataset.jump));
+    });
 
-  trackList.forEach(t => {
-   t.classList.remove("playing");
-   const num = t.querySelector(".track-num");
-   if(num) num.textContent = Array.from(trackList).indexOf(t)+1;
-  });
+    render();
+ document.addEventListener("click", function(e){
 
-  track.classList.add("playing");
-  document.querySelector(".cover").classList.add("playing");
+  const item = e.target.closest(".song-item");
+  if(!item) return;
 
-  if(player.src !== track.dataset.audio){
-   player.src = track.dataset.audio;
-  }
+  const title = item.querySelector(".title")?.innerText || "";
+  const artist = item.querySelector(".artist")?.innerText || "";
 
-  player.play();
+  const text = title + " / " + artist;
 
-  // イコライザー
-  track.querySelector(".track-num").innerHTML =
-  '<div class="equalizer"><span></span><span></span><span></span></div>';
+  navigator.clipboard.writeText(text);
 
-  // Now Playing
-  const now = document.getElementById("nowPlaying");
-  const title = document.getElementById("nowTitle");
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
 
-  if(title){
-   title.textContent =
-   "▶ " + track.querySelector(".track-title").textContent;
-  }
-
-  if(now){
-   now.classList.add("show");
-
-   setTimeout(()=>{
-    now.classList.remove("show");
-   },3000);
-  }
-
- };
-
-});
-
-player.onended = () => {
-
- const current = document.querySelector(".track.playing");
- if(!current) return;
-
- const next = current.nextElementSibling;
-
- trackList.forEach(t=>{
-  t.classList.remove("playing");
-  const num = t.querySelector(".track-num");
-  if(num) num.textContent = Array.from(trackList).indexOf(t)+1;
- });
-
- if(next && next.classList.contains("track")){
-
-  next.classList.add("playing");
-
-  next.querySelector(".track-num").innerHTML =
-  '<div class="equalizer"><span></span><span></span><span></span></div>';
-
-  player.src = next.dataset.audio;
-
-
-if ("mediaSession" in navigator) {
-
- navigator.mediaSession.metadata = new MediaMetadata({
-  title: next.querySelector(".track-title").textContent
- });
-
-}
-
-
-  player.play();
-
- }
-
-};
-
-player.onplay = () => {
-
- const lyrics = document.querySelector(".lyrics-box");
- if(!lyrics) return;
-
- lyrics.scrollTop = 0;
-
- const duration = player.duration;
- const start = Date.now();
-
- const scroll = () => {
-
-  if(player.paused) return;
-
-  const elapsed = (Date.now() - start)/1000;
-  const percent = elapsed/duration;
-
-  lyrics.scrollTop =
-  percent*(lyrics.scrollHeight-lyrics.clientHeight);
-
-  if(elapsed < duration){
-   requestAnimationFrame(scroll);
-  }
-
- };
-
- scroll();
-
-};
-
-player.addEventListener("timeupdate",()=>{
-
- if(!player.duration) return;
-
- const percent = (player.currentTime/player.duration)*100;
-
- const playing = document.querySelector(".track.playing");
-
- if(playing){
-
-  const bar = playing.querySelector(".track-bar");
-  if(bar) bar.style.width = percent+"%";
-
-  const time = playing.querySelector(".track-time");
-  if(time){
-   time.textContent =
-   format(player.currentTime)+" / "+format(player.duration);
-  }
-
- }
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1200);
 
 });
+  
 
-player.onpause = () => {
-
- const playing = document.querySelector(".track.playing");
- if(!playing) return;
-
- const time = playing.querySelector(".track-time");
- const duration = format(player.duration);
-
- if(time){
-  time.textContent = duration;
- }
-
-};
-
-function format(sec){
-
- if(!sec) return "0:00";
-
- const m = Math.floor(sec/60);
- const s = Math.floor(sec%60).toString().padStart(2,"0");
-
- return m+":"+s;
-
+function updateRecent(song){
+let list = JSON.parse(localStorage.getItem("recentSongs") || "[]");
+list = list.filter(s => s !== song);
+list.unshift(song);
+list = list.slice(0,5);
+localStorage.setItem("recentSongs", JSON.stringify(list));
+renderRecent();
 }
 
-if("mediaSession" in navigator){
-
- navigator.mediaSession.setActionHandler("nexttrack",()=>{
-
-  const current = document.querySelector(".track.playing");
-  if(!current) return;
-
-  const next = current.nextElementSibling;
-
-  if(next && next.classList.contains("track")){
-   next.click();
-  }
-
- });
-
- navigator.mediaSession.setActionHandler("previoustrack",()=>{
-
-  const current = document.querySelector(".track.playing");
-  if(!current) return;
-
-  const prev = current.previousElementSibling;
-
-  if(prev && prev.classList.contains("track")){
-   prev.click();
-  }
-
- });
-
+function renderRecent(){
+const box = document.getElementById("recentList");
+if(!box) return;
+let list = JSON.parse(localStorage.getItem("recentSongs") || "[]");
+box.innerHTML = list.map(s=>"<div>"+s+"</div>").join("");
 }
 
+document.addEventListener("DOMContentLoaded",renderRecent);
 
 </script>
 <script>
-function checkPassword(){
-  const password = "kupi2026";
-  const input = document.getElementById("passwordInput").value;
-
-  if(input === password){
-    document.getElementById("passwordScreen").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-  }else{
-    document.getElementById("errorText").textContent = "パスワードが違います";
-  }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js');
 }
+
+function updateRecent(song){
+let list = JSON.parse(localStorage.getItem("recentSongs") || "[]");
+list = list.filter(s => s !== song);
+list.unshift(song);
+list = list.slice(0,5);
+localStorage.setItem("recentSongs", JSON.stringify(list));
+renderRecent();
+}
+
+function renderRecent(){
+const box = document.getElementById("recentList");
+if(!box) return;
+let list = JSON.parse(localStorage.getItem("recentSongs") || "[]");
+box.innerHTML = list.map(s=>"<div>"+s+"</div>").join("");
+}
+
+document.addEventListener("DOMContentLoaded",renderRecent);
+
+
+/* ↓↓↓ 曲タップでコピー機能 ↓↓↓ */
+
+let pressTimer;
+
+function copySong(item){
+
+  const title = item.querySelector(".title")?.innerText || "";
+  const artist = item.querySelector(".artist")?.innerText || "";
+  const text = `リクエスト：${title} / ${artist}`;
+
+  navigator.clipboard.writeText(text);
+
+  const toast = document.getElementById("toast");
+  toast.innerText = "コピーしました\n" + text;
+  toast.classList.add("show");
+
+  setTimeout(()=>toast.classList.remove("show"),2000);
+}
+
+/* スマホ長押し */
+
+document.addEventListener("touchstart", function(e){
+
+  const item = e.target.closest(".song-item");
+  if(!item) return;
+
+  pressTimer = setTimeout(()=>copySong(item),600);
+
+});
+
+document.addEventListener("touchend", ()=> clearTimeout(pressTimer));
+document.addEventListener("touchmove", ()=> clearTimeout(pressTimer));
+
+/* PCクリック */
+
+document.addEventListener("click", function(e){
+
+  const item = e.target.closest(".song-item");
+  if(!item) return;
+
+  copySong(item);
+
+});
 </script>
 
+<div id="toast" class="toast">コピーしました</div>
+<div class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 </body>
 </html>
