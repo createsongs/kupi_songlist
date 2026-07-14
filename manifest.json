@@ -1,6 +1,6 @@
 {
-  "name": "mao弾き歌いリスト",
-  "short_name": "maoリスト",
+  "name": "kupi歌えるリスト",
+  "short_name": "kupiリスト",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff8fb",
