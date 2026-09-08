@@ -347,6 +347,24 @@ z-index:999;
   color:#7b6c74;
   margin:6px 2px 10px;
 }
+
+/* ===== ORIGINAL SONGS ===== */
+
+.original-box{
+  margin:10px 0 14px;
+}
+
+.original-heading{
+  font-size:14px;
+  color:#7b6c74;
+  font-weight:700;
+  margin:0 2px 8px;
+}
+
+.original-item:active{
+  transform:scale(.97);
+}
+
 </style>
   <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#f59fbc">
@@ -365,15 +383,39 @@ z-index:999;
           <input id="searchBox" type="text" placeholder="曲名・アーティスト・メモで検索">
         </div>
 <div class="info-text">
-🎙 リストはアーティスト順表示になっています
+🎙 リストはアーティスト順表示になっています<br>
+📋 曲名タップでコメント欄にコピペできます
 </div>
         
-<div class="recent-box">
-<div class="recent-title">最近リクエストされた曲</div>
-<div class="recent-list" id="recentList"></div>
-<button onclick="localStorage.removeItem('recentSongs');renderRecent();" style="margin-top:6px;font-size:12px;border:none;background:#f2d7e1;padding:6px 10px;border-radius:8px;cursor:pointer;">
-履歴リセット
-</button>
+<div class="original-box">
+  <div class="original-heading">🎧 オリジナル曲</div>
+
+  <div class="song-item original-song" data-id="original||まだ見ぬ景色へ||kupi.">
+    <div class="initial">♪</div>
+    <div class="meta">
+      <div class="title">kupi.</div>
+      <div class="artist">まだ見ぬ景色へ</div>
+    </div>
+    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+  </div>
+
+  <div class="song-item original-song" data-id="original||終われない夏||kupi.">
+    <div class="initial">♪</div>
+    <div class="meta">
+      <div class="title">kupi.</div>
+      <div class="artist">終われない夏</div>
+    </div>
+    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+  </div>
+
+  <div class="song-item original-song" data-id="original||星になりたい||kupi.">
+    <div class="initial">♪</div>
+    <div class="meta">
+      <div class="title">kupi.</div>
+      <div class="artist">星になりたい</div>
+    </div>
+    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+  </div>
 </div>
 <div class="info-text">
 気軽にリクエストしてね💕
@@ -418,7 +460,7 @@ Instagram
   </div>
 
   <script>
-    const songs = [{"initial": "あ", "artist": "AI", "title": "Story"},
+const songs = [{"initial": "あ", "artist": "AI", "title": "Story"},
 {"initial": "あ", "artist": "相川七瀬", "title": "恋心"},
 {"initial": "あ", "artist": "相川七瀬", "title": "BREAK OUT！"},
 {"initial": "あ", "artist": "相川七瀬", "title": "夢見る少女じゃいられない"},
@@ -430,6 +472,8 @@ Instagram
 {"initial": "あ", "artist": "Ado", "title": "踊"},
 {"initial": "あ", "artist": "Ado", "title": "ギラギラ"},
 {"initial": "あ", "artist": "Ado", "title": "私は最強"},
+{"initial": "あ", "artist": "Ado", "title": "レディメイド"},
+{"initial": "あ", "artist": "Ado", "title": "エルフ"},
 {"initial": "あ", "artist": "安室奈美恵", "title": "Don't wanna cry"},
 {"initial": "あ", "artist": "安室奈美恵 with SUPER MONKEY'S", "title": "PARADISE TRAIN"},
 {"initial": "あ", "artist": "絢香", "title": "ずっとキミと"},
@@ -440,6 +484,7 @@ Instagram
 {"initial": "あ", "artist": "アンジェラ・アキ", "title": "This Love"},
 {"initial": "あ", "artist": "アンジェラ・アキ", "title": "手紙～拝啓十五の君へ～"},
 {"initial": "あ", "artist": "アンジェラ・アキ", "title": "始まりのバラード"},
+{"initial": "あ", "artist": "あんしんパパ", "title": "はじめてのチュウ"},
 {"initial": "い", "artist": "石川さゆり", "title": "津軽海峡・冬景色"},
 {"initial": "い", "artist": "伊藤由奈", "title": "ENDLESS STORY"},
 {"initial": "い", "artist": "伊藤由奈", "title": "Precious"},
@@ -476,6 +521,7 @@ Instagram
 {"initial": "お", "artist": "Official髭男dism", "title": "Cry Baby"},
 {"initial": "お", "artist": "Official髭男dism", "title": "Pretender"},
 {"initial": "か", "artist": "海援隊", "title": "贈る言葉"},
+{"initial": "か", "artist": "ガガガDX", "title": "にんげんっていいな"},
 {"initial": "か", "artist": "華原朋美", "title": "I'm proud"},
 {"initial": "か", "artist": "Kanaria", "title": "酔いどれ知らず"},
 {"initial": "き", "artist": "木村カエラ", "title": "Butterfly"},
@@ -490,6 +536,7 @@ Instagram
 {"initial": "く", "artist": "GLAY", "title": "HOWEVER"},
 {"initial": "く", "artist": "GLAY", "title": "誘惑"},
 {"initial": "け", "artist": "K", "title": "Only Human"},
+{"initial": "こ", "artist": "小泉今日子", "title": "学園天国"},
 {"initial": "こ", "artist": "倖田來未", "title": "愛のうた"},
 {"initial": "こ", "artist": "倖田來未", "title": "キューティーハニー"},
 {"initial": "こ", "artist": "倖田來未", "title": "Butterfly"},
@@ -596,9 +643,11 @@ Instagram
 {"initial": "み", "artist": "MISIA", "title": "逢いたくていま"},
 {"initial": "み", "artist": "MISIA", "title": "アイノカタチ"},
 {"initial": "み", "artist": "MISIA", "title": "Everything"},
+{"initial": "み", "artist": "Mrs. GREEN APPLE", "title": "僕のこと"},
 {"initial": "や", "artist": "矢井田瞳", "title": "How?"},
 {"initial": "や", "artist": "矢井田瞳", "title": "B'coz I Love You"},
 {"initial": "や", "artist": "山口百恵", "title": "プレイバック part 2"},
+{"initial": "や", "artist": "山口百恵", "title": "イミテイション・ゴールド"},
 {"initial": "ゆ", "artist": "YUI", "title": "again"},
 {"initial": "ゆ", "artist": "YUI", "title": "Happy Birthday to you you"},
 {"initial": "ゆ", "artist": "YUI", "title": "Rolling star"},
@@ -615,6 +664,8 @@ Instagram
 {"initial": "り", "artist": "LiSA", "title": "炎"},
 {"initial": "り", "artist": "Little Glee Monster", "title": "放課後ハイファイブ"},
 {"initial": "り", "artist": "緑黄色社会", "title": "花になって"},
+{"initial": "り", "artist": "緑黄色社会", "title": "Player1"},
+{"initial": "り", "artist": "緑黄色社会", "title": "Mela!"},
 {"initial": "る", "artist": "Le Couple", "title": "ひだまりの詩"},
 {"initial": "れ", "artist": "レベッカ", "title": "フレンズ"},
 {"initial": "れ", "artist": "レミオロメン", "title": "粉雪"},
@@ -737,28 +788,7 @@ Instagram
     });
 
     render();
- document.addEventListener("click", function(e){
-
-  const item = e.target.closest(".song-item");
-  if(!item) return;
-
-  const title = item.querySelector(".title")?.innerText || "";
-  const artist = item.querySelector(".artist")?.innerText || "";
-
-  const text = title + " / " + artist;
-
-  navigator.clipboard.writeText(text);
-
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1200);
-
-});
-  
-
+ 
 function updateRecent(song){
 let list = JSON.parse(localStorage.getItem("recentSongs") || "[]");
 list = list.filter(s => s !== song);
@@ -806,6 +836,19 @@ document.addEventListener("DOMContentLoaded",renderRecent);
 
 let pressTimer;
 
+function copyOriginal(title){
+
+  const text = `リクエスト：kupi. / ${title}`;
+
+  navigator.clipboard.writeText(text);
+
+  const toast = document.getElementById("toast");
+  toast.innerText = "コピーしました\n" + text;
+  toast.classList.add("show");
+
+  setTimeout(()=>toast.classList.remove("show"),2000);
+}
+
 function copySong(item){
 
   const title = item.querySelector(".title")?.innerText || "";
@@ -839,12 +882,44 @@ document.addEventListener("touchmove", ()=> clearTimeout(pressTimer));
 
 document.addEventListener("click", function(e){
 
+  if(e.target.closest(".fav-btn")) return;
+
   const item = e.target.closest(".song-item");
   if(!item) return;
 
   copySong(item);
 
 });
+
+function setupOriginalFavorites() {
+  document.querySelectorAll(".original-song").forEach(item => {
+    const id = item.dataset.id;
+    const btn = item.querySelector(".fav-btn");
+
+    const active = favorites.has(id);
+    btn.classList.toggle("active", active);
+    btn.textContent = active ? "★" : "☆";
+
+    btn.addEventListener("click", function(e) {
+      e.stopPropagation();
+
+      if (favorites.has(id)) {
+        favorites.delete(id);
+      } else {
+        favorites.add(id);
+      }
+
+      saveFavorites();
+
+      const isFav = favorites.has(id);
+      btn.classList.toggle("active", isFav);
+      btn.textContent = isFav ? "★" : "☆";
+    });
+  });
+}
+
+setupOriginalFavorites();
+
 </script>
 
 <div id="toast" class="toast">コピーしました</div>
