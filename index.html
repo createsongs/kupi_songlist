@@ -213,7 +213,9 @@
       cursor: pointer;
       font-size: 23px;
       line-height: 1;
-      padding: 4px 2px;
+     padding: 0;
+     width: 44px;
+     height: 44px;
       color: #d7b3c0;
       align-self: center;
     }
@@ -248,46 +250,6 @@
 
 .toast.show {
   opacity: 1;
-}
-  
-/* ===== SOCIAL ICON BAR ===== */
-.social-grid{
-display:flex;
-gap:18px;
-overflow-x:auto;
-padding:8px 4px 12px;
-margin-top:6px;
-}
-.social-grid::-webkit-scrollbar{display:none;}
-
-.social-item{
-flex:0 0 auto;
-text-align:center;
-font-size:12px;
-font-weight:600;
-color:#555;
-text-decoration:none;
-}
-
-.social-item img{
-width:42px;
-height:42px;
-display:block;
-margin:0 auto 6px;
-object-fit:cover;
-border-radius:50%;
-}
-
-/* brand color circles */
-.youtube img{background:#FF0000;}
-.instagram img{background:#E4405F;}
-.tiktok img{background:#000000;}
-.spotify img{background:#1DB954;}
-.lyrics img{background:#f59fbc;}
-.shop img{background:#ff9f43;}
-
-.social-item img:hover{
-transform:scale(1.08);
 }
 
 /* ===== RANDOM BUTTON ===== */
@@ -351,7 +313,7 @@ z-index:999;
 /* ===== ORIGINAL SONGS ===== */
 
 .original-box{
-  margin:10px 0 14px;
+  margin:10px 14px 14px;
 }
 
 .original-heading{
@@ -370,6 +332,7 @@ z-index:999;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding:0 14px;
 }
 
 .info-social-row .info-text {
