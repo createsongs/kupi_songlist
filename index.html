@@ -365,99 +365,145 @@ z-index:999;
   transform:scale(.97);
 }
 
+.info-social-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.info-social-row .info-text {
+  flex: 1;
+}
+
+.instagram-icon {
+  flex: 0 0 auto;
+  display: block;
+}
+
+.instagram-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
 </style>
-  <link rel="manifest" href="./manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#f59fbc">
 <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
-  <div class="app">
-    <div class="hero">
-      <img src="header2.png" alt="kupi header">
-    </div>
-
-    <div class="sticky-area">
-      <div class="inner">
-        <div class="search-wrap">
-          <span class="search-icon">🔎</span>
-          <input id="searchBox" type="text" placeholder="曲名・アーティスト・メモで検索">
-        </div>
-<div class="info-text">
-🎙 リストはアーティスト順表示になっています<br>
-📋 曲名タップでコメント欄にコピペできます
-</div>
-        
-<div class="original-box">
-  <div class="original-heading">🎧 オリジナル曲</div>
-
-  <div class="song-item original-song" data-id="original||まだ見ぬ景色へ||kupi.">
-    <div class="initial">♪</div>
-    <div class="meta">
-      <div class="title">kupi.</div>
-      <div class="artist">まだ見ぬ景色へ</div>
-    </div>
-    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+<div class="app">
+  <div class="hero">
+    <img src="header2.png" alt="kupi header">
   </div>
 
-  <div class="song-item original-song" data-id="original||終われない夏||kupi.">
-    <div class="initial">♪</div>
-    <div class="meta">
-      <div class="title">kupi.</div>
-      <div class="artist">終われない夏</div>
+
+  <!-- 説明文 ＋ Instagram -->
+  <div class="info-social-row">
+
+    <div class="info-text">
+      🎙 リストはアーティスト順表示になっています<br>
+      📋 曲名タップでコメント欄にコピペできます<br>
+      💕気軽にリクエストしてね💕
     </div>
-    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+
+    <a class="instagram-icon"
+       href="https://www.instagram.com/kupi.17live/"
+       target="_blank"
+       rel="noopener">
+      <img src="Instagram.png" alt="Instagram">
+    </a>
+
   </div>
 
-  <div class="song-item original-song" data-id="original||星になりたい||kupi.">
-    <div class="initial">♪</div>
-    <div class="meta">
-      <div class="title">kupi.</div>
-      <div class="artist">星になりたい</div>
-    </div>
-    <button class="fav-btn" type="button" aria-label="favorite">☆</button>
-  </div>
-</div>
-<div class="info-text">
-気軽にリクエストしてね💕
-</div>
-<div class="social-grid">
 
-<a class="social-item instagram" href="https://www.instagram.com/kupi.17live/" target="_blank">
-<img src="Instagram.png">
-Instagram
-</a>
+  <!-- オリジナル曲 -->
+  <div class="original-box">
+    <div class="original-heading">🎧 オリジナル曲</div>
 
-</div>
-
-<div class="top-row">
-          <div class="tabs">
-            <button class="tab active" data-mode="all">全リスト</button>
-            <button class="tab" data-mode="favorites">お気に入り</button>
-          </div>
-          <div class="count" id="countText">205曲</div>
-        </div>
-
-        <div class="jump" id="jumpBar">
-          <button type="button" data-jump="あ">あ</button>
-          <button type="button" data-jump="か">か</button>
-          <button type="button" data-jump="さ">さ</button>
-          <button type="button" data-jump="た">た</button>
-          <button type="button" data-jump="な">な</button>
-          <button type="button" data-jump="は">は</button>
-          <button type="button" data-jump="ま">ま</button>
-          <button type="button" data-jump="や">や</button>
-          <button type="button" data-jump="ら">ら</button>
-          <button type="button" data-jump="わ">わ</button>
-        </div>
+    <div class="song-item original-song" data-id="original||まだ見ぬ景色へ||kupi.">
+      <div class="initial">♪</div>
+      <div class="meta">
+        <div class="title">kupi.</div>
+        <div class="artist">まだ見ぬ景色へ</div>
       </div>
+      <button class="fav-btn" type="button" aria-label="favorite">☆</button>
     </div>
 
-    <div class="section">
-      <div id="emptyState" class="empty">見つからなかったよ</div>
-      <div class="song-list" id="songList"></div>
-      <div class="footer-space"></div>
+    <div class="song-item original-song" data-id="original||終われない夏||kupi.">
+      <div class="initial">♪</div>
+      <div class="meta">
+        <div class="title">kupi.</div>
+        <div class="artist">終われない夏</div>
+      </div>
+      <button class="fav-btn" type="button" aria-label="favorite">☆</button>
+    </div>
+
+    <div class="song-item original-song" data-id="original||星になりたい||kupi.">
+      <div class="initial">♪</div>
+      <div class="meta">
+        <div class="title">kupi.</div>
+        <div class="artist">星になりたい</div>
+      </div>
+      <button class="fav-btn" type="button" aria-label="favorite">☆</button>
     </div>
   </div>
+
+
+  <!-- ここから固定エリア -->
+  <div class="sticky-area">
+    <div class="inner">
+
+      <!-- 全リスト / お気に入り -->
+      <div class="top-row">
+        <div class="tabs">
+          <button class="tab active" data-mode="all">全リスト</button>
+          <button class="tab" data-mode="favorites">お気に入り</button>
+        </div>
+
+        <div class="count" id="countText">216曲</div>
+      </div>
+
+
+      <!-- 検索 -->
+      <div class="search-wrap">
+        <span class="search-icon">🔎</span>
+        <input
+          id="searchBox"
+          type="text"
+          placeholder="曲名・アーティスト・メモで検索"
+        >
+      </div>
+
+
+      <!-- あかさたな -->
+      <div class="jump" id="jumpBar">
+        <button type="button" data-jump="あ">あ</button>
+        <button type="button" data-jump="か">か</button>
+        <button type="button" data-jump="さ">さ</button>
+        <button type="button" data-jump="た">た</button>
+        <button type="button" data-jump="な">な</button>
+        <button type="button" data-jump="は">は</button>
+        <button type="button" data-jump="ま">ま</button>
+        <button type="button" data-jump="や">や</button>
+        <button type="button" data-jump="ら">ら</button>
+        <button type="button" data-jump="わ">わ</button>
+      </div>
+
+    </div>
+  </div>
+  <!-- 固定エリアここまで -->
+
+
+  <div class="section">
+    <div id="emptyState" class="empty">見つからなかったよ</div>
+    <div class="song-list" id="songList"></div>
+    <div class="footer-space"></div>
+  </div>
+
+</div>
 
   <script>
 const songs = [{"initial": "あ", "artist": "AI", "title": "Story"},
